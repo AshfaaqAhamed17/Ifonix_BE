@@ -1,11 +1,14 @@
 // nodemon app.js
 
 const express = require("express");
-const { connectToDb, getDb } = require("./db");
-const e = require("express");
-const port = 3500;
+const { connectToDb, getDb } = require("./database/db");
+const bodyParser = require("body-parser");
 
+const port = 1100;
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 let db;
 
@@ -30,6 +33,19 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.post("/user", (req, res) => {
+  let user = req.body;
+
+  db.collection("User")
+    .insertOne(user) // Pass the JavaScript object directly here
+    .then((result) => {
+      res.status(200).json({ result });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "err" });
+    });
+});
+
 app.get("/user", (req, res) => {
   let data = [];
 
@@ -44,6 +60,4 @@ app.get("/user", (req, res) => {
     .catch(() => {
       res.status(500).json({ error: "err" });
     });
-
-  // res.json({ user: `${port} User page` });
 });

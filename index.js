@@ -1,7 +1,11 @@
 const express = require("express");
+const cors = require("cors");
+const bodyparser = require("body-parser");
 // const cookieParser = require('cookie-parser');
 // const session = require('express-session');
 const authRoute = require("./routes/auth");
+const questionRoute = require("./routes/question");
+const answerRoute = require("./routes/answer");
 
 require("./database");
 
@@ -22,8 +26,13 @@ app.use((req, res, next) => {
 
 const PORT = 1100;
 
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(cors());
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
+
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,8 +51,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use('/api/v1/groceries', groceriesRoute);
-// app.use('/api/v1/markets', marketsRoute);
+app.use('/api/v1/answer', answerRoute);
+app.use("/api/v1/question", questionRoute);
 app.use("/api/v1/auth", authRoute);
 
 app.listen(PORT, () => console.log(`Running Express Server on Port ${PORT}!`));

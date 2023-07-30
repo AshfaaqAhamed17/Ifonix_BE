@@ -21,7 +21,12 @@ const QuestionSchema = new mongoose.Schema({
     type: Boolean,
   },
 
-  Rejectedfeedback: {
+  IsRejected: {
+    default: false,
+    type: Boolean,
+  },
+
+  rejectedfeedback: {
     default: "",
     type: mongoose.SchemaTypes.String,
   },

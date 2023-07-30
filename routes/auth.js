@@ -53,5 +53,10 @@ router.get("/all", async (request, response) => {
 
 module.exports = router;
 
+// ADMIN
 // "password": "ahamed@",
 // "email": "ahamed@gmail.com"
+
+// NORMAL USER
+// "password": "yasitha123",
+// "email": "yasitha@gmail.com"

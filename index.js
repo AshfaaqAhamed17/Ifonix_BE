@@ -53,7 +53,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1/answer', answerRoute);
+app.use("/api/v1/answer", answerRoute);
 app.use("/api/v1/question", questionRoute);
 app.use("/api/v1/auth", authRoute);
 

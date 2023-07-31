@@ -11,7 +11,9 @@ router.get("/", async (request, response) => {
 router.get("/adminApproved", async (request, response) => {
   try {
     // Find questions with IsAdminApproved set to true
-    const questions = await Question.find({ IsAdminApproved: true });
+    const questions = await Question.find({ IsAdminApproved: true })
+      .sort({ createdDate: -1 })
+      .exec();
 
     // Extract all author IDs from the questions
     const authorIds = questions.map((question) => question.author);
@@ -46,7 +48,9 @@ router.get("/adminUnapproved", async (request, response) => {
   try {
     const questions = await Question.find({
       $and: [{ IsAdminApproved: false }, { IsRejected: false }],
-    });
+    })
+      .sort({ createdDate: -1 })
+      .exec();
 
     // Extract all author IDs from the questions
     const authorIds = questions.map((question) => question.author);
@@ -79,7 +83,9 @@ router.get("/adminUnapproved", async (request, response) => {
 
 router.get("/adminRejected", async (request, response) => {
   try {
-    const questions = await Question.find({ IsRejected: true });
+    const questions = await Question.find({ IsRejected: true })
+      .sort({ createdDate: -1 })
+      .exec();
     // Extract all author IDs from the questions
     const authorIds = questions.map((question) => question.author);
 
@@ -158,10 +164,11 @@ router.get("/rejectedfeedback/:id", async (request, response) => {
   const question = await Question.find({
     author: { $in: id },
     $and: [{ IsRejected: true }],
-  });
+  })
+    .sort({ createdDate: -1 })
+    .exec();
 
   response.send(question);
 });
-
 
 module.exports = router;

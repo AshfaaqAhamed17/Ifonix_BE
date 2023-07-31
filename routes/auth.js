@@ -47,7 +47,7 @@ router.post("/register", async (request, response) => {
 });
 
 router.get("/all", async (request, response) => {
-  const users = await User.find();
+  const users = await User.find().sort({ createdAt: -1 }).exec();
   response.send(users);
 });
 

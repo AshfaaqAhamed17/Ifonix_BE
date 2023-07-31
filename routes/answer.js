@@ -13,7 +13,9 @@ router.get("/approved/:questionId", async (request, response) => {
 
   const answers = await Answer.find({
     questionId,
-  });
+  })
+    .sort({ createdDate: -1 })
+    .exec();
 
   const authorIds = answers.map((answer) => answer.author);
   const authors = await User.find({ _id: { $in: authorIds } });
@@ -38,7 +40,12 @@ router.get("/approved/:questionId", async (request, response) => {
 router.post("/create", async (request, response) => {
   const { questionId, answer, author } = request.body;
   const newAnswer = await Answer.create({ questionId, answer, author });
-  response.send(newAnswer);
+
+  // map the author id to the author name
+  const user = await User.findById(author);
+  const authorName = user.userName;
+
+  response.send({ ...newAnswer._doc, author: authorName });
 });
 
 router.delete("/:id", async (request, response) => {

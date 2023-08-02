@@ -1,6 +1,6 @@
 # Ifonix_BE
-
-## Steps to run the Express project on your local machine:
+## Node JS -- Express JS (backend)
+### Steps to run the Express project on your local machine:
 - Clone the project.  
 
 - Node version -- ```18.x```

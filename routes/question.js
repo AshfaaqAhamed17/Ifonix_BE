@@ -3,11 +3,13 @@ const Question = require("../database/schemas/Question");
 const User = require("../database/schemas/User");
 const router = Router();
 
+// Get all questions
 router.get("/", async (request, response) => {
   const questions = await Question.find();
   response.send(questions);
 });
 
+// Get all questions that are approved by the admin
 router.get("/adminApproved", async (request, response) => {
   try {
     // Find questions with IsAdminApproved set to true
@@ -44,6 +46,7 @@ router.get("/adminApproved", async (request, response) => {
   }
 });
 
+// Get all unapproved questions
 router.get("/adminUnapproved", async (request, response) => {
   try {
     const questions = await Question.find({
@@ -81,6 +84,7 @@ router.get("/adminUnapproved", async (request, response) => {
   }
 });
 
+// Get all rejected questions
 router.get("/adminRejected", async (request, response) => {
   try {
     const questions = await Question.find({ IsRejected: true })
@@ -115,6 +119,7 @@ router.get("/adminRejected", async (request, response) => {
   }
 });
 
+// Create a new question
 router.post("/create", async (request, response) => {
   const { title, description, author, IsAdminApproved } = request.body;
   const newQuestion = await Question.create({

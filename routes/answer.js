@@ -3,20 +3,24 @@ const Answer = require("../database/schemas/Answer");
 const User = require("../database/schemas/User");
 const router = Router();
 
+// Get all answers
 router.get("/", async (request, response) => {
   const answers = await Answer.find();
   response.send(answers);
 });
 
+// Get all answers for a question
 router.get("/approved/:questionId", async (request, response) => {
   const { questionId } = request.params;
 
+  // Sort based on the createdDate field in descending order
   const answers = await Answer.find({
     questionId,
   })
     .sort({ createdDate: -1 })
     .exec();
 
+    // Get the authorName for each answer and map it to the answer
   const authorIds = answers.map((answer) => answer.author);
   const authors = await User.find({ _id: { $in: authorIds } });
 
@@ -37,6 +41,7 @@ router.get("/approved/:questionId", async (request, response) => {
   response.send(answersWithAuthors);
 });
 
+// Post an answer to a question
 router.post("/create", async (request, response) => {
   const { questionId, answer, author } = request.body;
   const newAnswer = await Answer.create({ questionId, answer, author });
@@ -48,6 +53,7 @@ router.post("/create", async (request, response) => {
   response.send({ ...newAnswer._doc, author: authorName });
 });
 
+// Delete an answer
 router.delete("/:id", async (request, response) => {
   const { id } = request.params;
 
